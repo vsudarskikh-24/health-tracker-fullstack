@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Настройка профиля - Трекер здоровья</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="centered-container">
+    <div class="setup-container">
+        <div class="title">Расскажите о себе</div>
+        <div class="subtitle">Это поможет нам персонализировать рекомендации</div>
+        <div class="input-row">
+            <input type="number" class="input" placeholder="Возраст" id="age">
+            <select class="input" id="gender">
+                <option value="">Пол</option>
+                <option value="male">Мужской</option>
+                <option value="female">Женский</option>
+            </select>
+        </div>
+        <div class="input-row">
+            <input type="number" class="input" placeholder="Рост (см)" id="height">
+            <input type="number" class="input" placeholder="Вес (кг)" id="weight">
+        </div>
+        <select class="input-full" id="activity">
+            <option value="">Уровень активности</option>
+            <option value="low">Низкий</option>
+            <option value="medium">Средний</option>
+            <option value="high">Высокий</option>
+        </select>
+        <button class="button" onclick="saveProfile()">Продолжить</button>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        function saveProfile() {
+            const age = document.getElementById('age').value;
+            const gender = document.getElementById('gender').value;
+            const height = document.getElementById('height').value;
+            const weight = document.getElementById('weight').value;
+            const activity = document.getElementById('activity').value;
+            
+            if (!age || !gender || !height || !weight || !activity) {
+                alert('Пожалуйста, заполните все поля');
+                return;
+            }
+            
+            if (age < 10 || age > 120) {
+                alert('Введите корректный возраст');
+                return;
+            }
+            
+            if (height < 100 || height > 250) {
+                alert('Введите корректный рост');
+                return;
+            }
+            
+            if (weight < 30 || weight > 300) {
+                alert('Введите корректный вес');
+                return;
+            }
+            
+            const userData = JSON.parse(localStorage.getItem('healthTrackerUser') || '{}');
+            userData.age = age;
+            userData.gender = gender;
+            userData.height = height;
+            userData.weight = weight;
+            userData.activity = activity;
+            userData.profileComplete = true;
+            
+            localStorage.setItem('healthTrackerUser', JSON.stringify(userData));
+            
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+</body>
+</html>

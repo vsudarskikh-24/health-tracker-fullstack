@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Учет питания - Трекер здоровья</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="header">
+        <a href="dashboard.html" class="back">← Назад</a>
+    </div>
+    
+    <div class="container container-small">
+        <div class="page-title">Питание</div>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="switchMeal('breakfast')">Завтрак</div>
+            <div class="tab" onclick="switchMeal('lunch')">Обед</div>
+            <div class="tab" onclick="switchMeal('dinner')">Ужин</div>
+        </div>
+        
+        <div class="card" id="mealCard">
+            <div class="meal-item">
+                <span>Овсяная каша</span>
+                <span>200г</span>
+            </div>
+            <div class="meal-item">
+                <span>Банан</span>
+                <span>1 шт</span>
+            </div>
+            <div class="meal-item">
+                <span>Кофе</span>
+                <span>250мл</span>
+            </div>
+            <button class="add-button" onclick="addProduct()">+ Добавить продукт</button>
+        </div>
+        
+        <button class="button" onclick="saveMeal()">Сохранить</button>
+    </div>
+    <script src="js/main.js"></script>
+    <script>
+        let currentMeal = 'breakfast';
+        
+        function switchMeal(meal) {
+            currentMeal = meal;
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+        
+        function addProduct() {
+            const productName = prompt('Название продукта:');
+            const productAmount = prompt('Количество:');
+            
+            if (productName && productAmount) {
+                const mealCard = document.getElementById('mealCard');
+                const addButton = mealCard.querySelector('.add-button');
+                
+                const newItem = document.createElement('div');
+                newItem.className = 'meal-item';
+                newItem.innerHTML = `
+                    <span>${productName}</span>
+                    <span>${productAmount}</span>
+                `;
+                
+                mealCard.insertBefore(newItem, addButton);
+            }
+        }
+        
+        function saveMeal() {
+            const today = new Date().toISOString().split('T')[0];
+            const dailyData = JSON.parse(localStorage.getItem(`healthTracker_${today}`) || '{}');
+            
+            if (!dailyData.meals) {
+                dailyData.meals = [];
+            }
+            
+            dailyData.meals.push({
+                type: currentMeal,
+                time: new Date().toISOString()
+            });
+            
+            localStorage.setItem(`healthTracker_${today}`, JSON.stringify(dailyData));
+            
+            alert('Данные о питании сохранены!');
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+</body>
+</html>

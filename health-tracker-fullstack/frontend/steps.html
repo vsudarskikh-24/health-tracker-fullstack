@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Учет шагов - Трекер здоровья</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="header">
+        <a href="dashboard.html" class="back">← Назад</a>
+    </div>
+    
+    <div class="container container-small text-center">
+        <div class="page-title">Физическая активность</div>
+        
+        <div class="steps-display">
+            <div class="steps-value" id="stepsValue">8240</div>
+            <div class="steps-goal">из 10000 шагов</div>
+            <div class="progress-bar" style="max-width: 400px; margin: 0 auto;">
+                <div class="progress-fill" id="stepsProgress" style="width: 82%"></div>
+            </div>
+        </div>
+        
+        <div class="input-card">
+            <input type="number" class="input" placeholder="8240" id="stepsInput" value="8240">
+        </div>
+        
+        <button class="button" onclick="saveSteps()">Сохранить</button>
+    </div>
+    <script src="js/main.js"></script>
+    <script>
+        const goal = 10000;
+        
+        const today = new Date().toISOString().split('T')[0];
+        const dailyData = JSON.parse(localStorage.getItem(`healthTracker_${today}`) || '{}');
+        let currentSteps = dailyData.steps || 0;
+        
+        document.getElementById('stepsInput').value = currentSteps;
+        updateDisplay();
+        
+        function saveSteps() {
+            currentSteps = parseInt(document.getElementById('stepsInput').value) || 0;
+            
+            if (currentSteps < 0) {
+                alert('Введите корректное количество шагов');
+                return;
+            }
+            
+            const today = new Date().toISOString().split('T')[0];
+            const dailyData = JSON.parse(localStorage.getItem(`healthTracker_${today}`) || '{}');
+            dailyData.steps = currentSteps;
+            localStorage.setItem(`healthTracker_${today}`, JSON.stringify(dailyData));
+            
+            updateDisplay();
+            
+            if (currentSteps >= goal) {
+                alert('🎉 Поздравляем! Вы достигли дневной цели по шагам!');
+            } else {
+                alert('Данные о шагах сохранены!');
+            }
+            
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 1500);
+        }
+        
+        function updateDisplay() {
+            document.getElementById('stepsValue').textContent = currentSteps.toLocaleString();
+            const progress = Math.min((currentSteps / goal) * 100, 100);
+            document.getElementById('stepsProgress').style.width = `${progress}%`;
+        }
+    </script>
+</body>
+</html>

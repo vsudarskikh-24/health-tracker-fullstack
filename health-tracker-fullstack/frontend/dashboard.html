@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная - Трекер здоровья</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">💚 Трекер здоровья</div>
+        <div class="nav">
+            <a href="statistics.html" class="nav-item">Статистика</a>
+            <a href="goals.html" class="nav-item">Цели</a>
+            <a href="advice.html" class="nav-item">Советы</a>
+            <a href="profile.html" class="nav-item">Профиль</a>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="welcome">Добро пожаловать, <span id="userName">Иван</span></div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-title">Сон</div>
+                <div class="stat-value">7.5ч</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 85%"></div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Вода</div>
+                <div class="stat-value">1.8л</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 72%"></div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Шаги</div>
+                <div class="stat-value">8240</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 82%"></div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Питание</div>
+                <div class="stat-value">3</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 60%"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="actions">
+            <button class="button" onclick="showQuickMenu()">+ Добавить данные</button>
+        </div>
+    </div>
+    <script src="js/main.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const userData = JSON.parse(localStorage.getItem('healthTrackerUser') || '{}');
+            if (userData.name) {
+                document.getElementById('userName').textContent = userData.name;
+            }
+        });
+        
+        function showQuickMenu() {
+            const choice = prompt('Что вы хотите добавить?\n\n1 - Сон\n2 - Питание\n3 - Вода\n4 - Шаги');
+            
+            switch(choice) {
+                case '1':
+                    window.location.href = 'sleep.html';
+                    break;
+                case '2':
+                    window.location.href = 'food.html';
+                    break;
+                case '3':
+                    window.location.href = 'water.html';
+                    break;
+                case '4':
+                    window.location.href = 'steps.html';
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль - Трекер здоровья</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="header">
+        <a href="dashboard.html" class="back">← Назад</a>
+    </div>
+    
+    <div class="container container-small">
+        <div class="profile-header">
+            <div class="avatar" id="avatar">И</div>
+            <div class="profile-name" id="profileName">Иван Петров</div>
+            <div class="profile-email" id="profileEmail">ivan@email.com</div>
+        </div>
+        
+        <div class="info-card">
+            <div class="info-title">Личные данные</div>
+            <div class="info-row">
+                <span class="info-label">Возраст</span>
+                <span class="info-value" id="age">30 лет</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Пол</span>
+                <span class="info-value" id="gender">Мужской</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Рост</span>
+                <span class="info-value" id="height">175 см</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Вес</span>
+                <span class="info-value" id="weight">70 кг</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Активность</span>
+                <span class="info-value" id="activity">Средняя</span>
+            </div>
+        </div>
+        
+        <div class="actions">
+            <button class="button" onclick="editProfile()">Редактировать профиль</button>
+            <button class="button button-outline" onclick="exportData()">Экспорт данных</button>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Загрузка данных профиля
+        window.addEventListener('DOMContentLoaded', () => {
+            const userData = JSON.parse(localStorage.getItem('healthTrackerUser') || '{}');
+            
+            if (userData.name) {
+                document.getElementById('profileName').textContent = userData.name;
+                document.getElementById('avatar').textContent = userData.name.charAt(0).toUpperCase();
+            }
+            
+            if (userData.email) {
+                document.getElementById('profileEmail').textContent = userData.email;
+            }
+            
+            if (userData.age) {
+                document.getElementById('age').textContent = `${userData.age} лет`;
+            }
+            
+            if (userData.gender) {
+                const genderText = userData.gender === 'male' ? 'Мужской' : 'Женский';
+                document.getElementById('gender').textContent = genderText;
+            }
+            
+            if (userData.height) {
+                document.getElementById('height').textContent = `${userData.height} см`;
+            }
+            
+            if (userData.weight) {
+                document.getElementById('weight').textContent = `${userData.weight} кг`;
+            }
+            
+            if (userData.activity) {
+                const activityMap = {
+                    'low': 'Низкая',
+                    'medium': 'Средняя',
+                    'high': 'Высокая'
+                };
+                document.getElementById('activity').textContent = activityMap[userData.activity] || userData.activity;
+            }
+        });
+        
+        function editProfile() {
+            window.location.href = 'profile-setup.html';
+        }
+        
+        function exportData() {
+            const userData = localStorage.getItem('healthTrackerUser');
+            const allData = {};
+            
+            // Собираем все данные
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('healthTracker_')) {
+                    allData[key] = JSON.parse(localStorage.getItem(key));
+                }
+            }
+            
+            const dataStr = JSON.stringify({
+                user: JSON.parse(userData),
+                dailyData: allData
+            }, null, 2);
+            
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'health-tracker-data.json';
+            a.click();
+            
+            alert('Данные экспортированы!');
+        }
+    </script>
+</body>
+</html>

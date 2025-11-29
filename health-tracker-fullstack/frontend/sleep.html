@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Учет сна - Трекер здоровья</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="header">
+        <a href="dashboard.html" class="back">← Назад</a>
+    </div>
+    
+    <div class="container container-small">
+        <div class="page-title">Учет сна</div>
+        
+        <div class="card">
+            <div class="card-title">Когда вы легли спать?</div>
+            <input type="time" class="input" value="23:00" id="sleepTime">
+        </div>
+        
+        <div class="card">
+            <div class="card-title">Когда проснулись?</div>
+            <input type="time" class="input" value="07:30" id="wakeTime">
+        </div>
+        
+        <div class="card">
+            <div class="card-title">Продолжительность сна</div>
+            <div class="result" id="duration">8.5 часов</div>
+        </div>
+        
+        <div class="card">
+            <div class="card-title">Оцените качество</div>
+            <div class="rating" id="rating">
+                <div class="star" data-value="1"></div>
+                <div class="star" data-value="2"></div>
+                <div class="star" data-value="3"></div>
+                <div class="star" data-value="4"></div>
+                <div class="star" data-value="5"></div>
+            </div>
+        </div>
+        
+        <button class="button" onclick="saveSleep()">Сохранить</button>
+    </div>
+    <script src="js/main.js"></script>
+    <script>
+        let selectedRating = 0;
+        const stars = document.querySelectorAll('.star');
+        
+        stars.forEach((star, index) => {
+            star.addEventListener('click', () => {
+                selectedRating = index + 1;
+                updateStars();
+            });
+        });
+        
+        function updateStars() {
+            stars.forEach((star, index) => {
+                if (index < selectedRating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+        
+        function calculateDuration() {
+            const sleepTime = document.getElementById('sleepTime').value;
+            const wakeTime = document.getElementById('wakeTime').value;
+            
+            if (sleepTime && wakeTime) {
+                const sleep = new Date(`2000-01-01 ${sleepTime}`);
+                let wake = new Date(`2000-01-01 ${wakeTime}`);
+                
+                if (wake < sleep) {
+                    wake = new Date(`2000-01-02 ${wakeTime}`);
+                }
+                
+                const diff = wake - sleep;
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                
+                document.getElementById('duration').textContent = 
+                    `${hours}.${Math.round(minutes / 6)} часов`;
+            }
+        }
+        
+        document.getElementById('sleepTime').addEventListener('change', calculateDuration);
+        document.getElementById('wakeTime').addEventListener('change', calculateDuration);
+        
+        function saveSleep() {
+            if (selectedRating === 0) {
+                alert('Пожалуйста, оцените качество сна');
+                return;
+            }
+            
+            const sleepData = {
+                bedTime: document.getElementById('sleepTime').value,
+                wakeTime: document.getElementById('wakeTime').value,
+                quality: selectedRating,
+                date: new Date().toISOString()
+            };
+            
+            const today = new Date().toISOString().split('T')[0];
+            const dailyData = JSON.parse(localStorage.getItem(`healthTracker_${today}`) || '{}');
+            dailyData.sleep = sleepData;
+            localStorage.setItem(`healthTracker_${today}`, JSON.stringify(dailyData));
+            
+            alert('Данные о сне сохранены!');
+            window.location.href = 'dashboard.html';
+        }
+        
+        calculateDuration();
+    </script>
+</body>
+</html>

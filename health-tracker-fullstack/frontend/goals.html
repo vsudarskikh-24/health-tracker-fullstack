@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Цели - Трекер здоровья</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="header">
+        <a href="dashboard.html" class="back">← Назад</a>
+    </div>
+    
+    <div class="container container-medium">
+        <div class="page-title">Мои цели</div>
+        
+        <div class="goal-card">
+            <div class="goal-info">
+                <div class="goal-name">💤 Сон</div>
+                <div class="goal-target">8 часов в день</div>
+            </div>
+            <div class="goal-progress">94%</div>
+        </div>
+        
+        <div class="goal-card">
+            <div class="goal-info">
+                <div class="goal-name">💧 Вода</div>
+                <div class="goal-target">2.5 литра в день</div>
+            </div>
+            <div class="goal-progress">72%</div>
+        </div>
+        
+        <div class="goal-card">
+            <div class="goal-info">
+                <div class="goal-name">👟 Шаги</div>
+                <div class="goal-target">10000 шагов в день</div>
+            </div>
+            <div class="goal-progress">82%</div>
+        </div>
+        
+        <div class="goal-card">
+            <div class="goal-info">
+                <div class="goal-name">🍽️ Питание</div>
+                <div class="goal-target">4 приема пищи в день</div>
+            </div>
+            <div class="goal-progress">75%</div>
+        </div>
+        
+        <div class="actions">
+            <button class="button" onclick="editGoals()">Редактировать</button>
+            <button class="button button-outline" onclick="addGoal()">+ Добавить цель</button>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        function editGoals() {
+            alert('Режим редактирования целей');
+            // Здесь можно добавить логику редактирования
+        }
+        
+        function addGoal() {
+            alert('Добавление новой цели');
+            // Здесь можно добавить логику добавления новой цели
+        }
+    </script>
+</body>
+</html>

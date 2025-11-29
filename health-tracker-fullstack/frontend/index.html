@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Трекер здоровья - Начните следить за здоровьем</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">💚 Трекер здоровья</div>
+        <a href="login.html" class="nav-link">Войти</a>
+    </div>
+    
+    <div class="main-content">
+        <div class="hero">
+            <div class="hero-text">
+                <h1>Ваше здоровье под контролем</h1>
+                <p>Следите за сном, питанием, водой и активностью в одном месте</p>
+            </div>
+            <div class="registration-form">
+                <div class="form-title">Начать сейчас</div>
+                <input type="text" class="input" placeholder="Имя" id="name">
+                <input type="email" class="input" placeholder="Email" id="email">
+                <input type="password" class="input" placeholder="Пароль" id="password">
+                <button class="button" onclick="register()">Зарегистрироваться</button>
+            </div>
+        </div>
+    </div>
+    <script src="js/main.js"></script>
+    <script>
+        function register() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (!name || !email || !password) {
+                alert('Пожалуйста, заполните все поля');
+                return;
+            }
+            
+            if (!email.includes('@')) {
+                alert('Введите корректный email');
+                return;
+            }
+            
+            if (password.length < 6) {
+                alert('Пароль должен быть не менее 6 символов');
+                return;
+            }
+            
+            localStorage.setItem('healthTrackerUser', JSON.stringify({
+                name: name,
+                email: email,
+                registered: new Date().toISOString()
+            }));
+            
+            window.location.href = 'profile-setup.html';
+        }
+    </script>
+</body>
+</html>

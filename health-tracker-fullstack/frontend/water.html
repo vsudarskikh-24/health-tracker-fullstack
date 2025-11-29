@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Учет воды - Трекер здоровья</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="header">
+        <a href="dashboard.html" class="back">← Назад</a>
+    </div>
+    
+    <div class="container container-small text-center">
+        <div class="page-title">Потребление воды</div>
+        
+        <div class="water-display">
+            <div class="water-value" id="waterValue">1800 мл</div>
+            <div class="water-goal">из 2500 мл</div>
+            <div class="progress-bar" style="max-width: 400px; margin: 0 auto;">
+                <div class="progress-fill" id="waterProgress" style="width: 72%"></div>
+            </div>
+        </div>
+        
+        <div class="counter">
+            <button class="counter-btn" onclick="decreaseAmount()">−</button>
+            <div class="counter-value" id="amount">250</div>
+            <button class="counter-btn" onclick="increaseAmount()">+</button>
+        </div>
+        
+        <button class="button" style="max-width: 400px; margin: 0 auto;" onclick="addWater()">Добавить</button>
+    </div>
+    <script src="js/main.js"></script>
+    <script>
+        let amount = 250;
+        const goal = 2500;
+        
+        const today = new Date().toISOString().split('T')[0];
+        const dailyData = JSON.parse(localStorage.getItem(`healthTracker_${today}`) || '{}');
+        let totalWater = dailyData.water || 0;
+        
+        updateDisplay();
+        
+        function decreaseAmount() {
+            if (amount > 50) {
+                amount -= 50;
+                document.getElementById('amount').textContent = amount;
+            }
+        }
+        
+        function increaseAmount() {
+            amount += 50;
+            document.getElementById('amount').textContent = amount;
+        }
+        
+        function addWater() {
+            totalWater += amount;
+            
+            const today = new Date().toISOString().split('T')[0];
+            const dailyData = JSON.parse(localStorage.getItem(`healthTracker_${today}`) || '{}');
+            dailyData.water = totalWater;
+            localStorage.setItem(`healthTracker_${today}`, JSON.stringify(dailyData));
+            
+            updateDisplay();
+            
+            if (totalWater >= goal) {
+                alert('🎉 Поздравляем! Вы достигли дневной цели по воде!');
+            } else {
+                alert(`Добавлено ${amount} мл`);
+            }
+        }
+        
+        function updateDisplay() {
+            document.getElementById('waterValue').textContent = `${totalWater} мл`;
+            const progress = Math.min((totalWater / goal) * 100, 100);
+            document.getElementById('waterProgress').style.width = `${progress}%`;
+        }
+    </script>
+</body>
+</html>

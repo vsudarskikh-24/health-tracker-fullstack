@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Статистика - Трекер здоровья</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="header">
+        <a href="dashboard.html" class="back">← Назад</a>
+    </div>
+    
+    <div class="container">
+        <div class="page-title">Статистика</div>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="switchPeriod('week')">Неделя</div>
+            <div class="tab" onclick="switchPeriod('month')">Месяц</div>
+            <div class="tab" onclick="switchPeriod('year')">Год</div>
+        </div>
+        
+        <div class="chart-card">
+            <div class="chart-title">Сон</div>
+            <div class="chart-placeholder">📊 График продолжительности сна</div>
+            <div class="stat-summary">
+                <div class="stat-item">
+                    <div class="stat-label">Среднее</div>
+                    <div class="stat-number">7.5ч</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Минимум</div>
+                    <div class="stat-number">6.2ч</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Максимум</div>
+                    <div class="stat-number">9.1ч</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="chart-card">
+            <div class="chart-title">Вода</div>
+            <div class="chart-placeholder">📊 График потребления воды</div>
+            <div class="stat-summary">
+                <div class="stat-item">
+                    <div class="stat-label">Среднее</div>
+                    <div class="stat-number">2.1л</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Минимум</div>
+                    <div class="stat-number">1.5л</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Максимум</div>
+                    <div class="stat-number">2.8л</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="chart-card">
+            <div class="chart-title">Шаги</div>
+            <div class="chart-placeholder">📊 График физической активности</div>
+            <div class="stat-summary">
+                <div class="stat-item">
+                    <div class="stat-label">Среднее</div>
+                    <div class="stat-number">8450</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Минимум</div>
+                    <div class="stat-number">5200</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Максимум</div>
+                    <div class="stat-number">12300</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/main.js"></script>
+    <script>
+        function switchPeriod(period) {
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            console.log(`Загрузка статистики за ${period}`);
+        }
+    </script>
+</body>
+</html>
